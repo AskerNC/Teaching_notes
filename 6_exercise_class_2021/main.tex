@@ -1,0 +1,186 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Sixth exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+
+
+\section{Next assignment}
+\begin{frame}{Data Analysis Project}
+
+    It might already be a good idea, to start thinking about what you wanna do and what kinda data you wanna use in the next assignment \newline
+    You can see the assignment at \href{https://github.com/NumEconCopenhagen/lectures-2021/blob/master/projects/DataProject.pdf}{\underline{Github}}, but basically you have to download data from an online source and do some empirical analysis (key figures and graphs).
+    You get to choose the data and what kind of analysis you wanna do yourself. There are LOADS of possibilities, so choose something you find interesting and seems manageable. Recreating a already existing figure using python is also good. \newline
+    You can see all the previous projects by searching 'projects-2019' and 'projects-2020' at the \href{https://github.com/NumEconCopenhagen}{\underline{NumEconCopenhagen github account}}. \newline
+    Also if you wanna do some regressions you can use \href{https://www.statsmodels.org/stable/user-guide.html}{\underline{statsmodels}}, but regressions are not a prerequisite for doing the assignment, a beautiful figure is just as good. \newline
+    Since these projects are idiosyncratic, you'll find less directly applicable code in the lectures and PS. But they are still good for inspiriation, along with googling your problems.
+\end{frame}
+
+\begin{frame}{Ideas}
+    \begin{itemize}
+        \item Investegating the home-field advantage using Covid-variation. \href{https://understat.readthedocs.io/en/latest/}{\underline{This}} should be able to the job. But you can also download excel sheets from \href{https://www.football-data.co.uk/data.php}{\underline{here}} (Inspiration from \href{http://ftp.iza.org/dp13578.pdf}{\underline{this paper}})
+        \item Twitter data (See for example \href{https://www.toptal.com/python/twitter-data-mining-using-python}{\underline{This guide}}
+        \item Google trends using \href{https://towardsdatascience.com/google-trends-api-for-python-a84bc25db88f}{\underline{pytrend}}
+        \item You recreate graphs from 'Capital in the 21st century' and 'Captial \& Ideology', either from  \href{https://www.quandl.com/data/PIKETTY-Thomas-Piketty}{\underline{QUANDLE}} or \href{http://piketty.pse.ens.fr/en/ideology}{\underline{Piketty's personal website}}
+        \item \href{https://wid.world/data/}{\underline{World Inequality Database}}
+        \item \href{https://pandas-datareader.readthedocs.io/en/latest/remote_data.html}{\underline{Pandas\_datareader}}, from L08 has the capability to load from multiple sources, including the World Bank, OECD and stock data. 
+        \item Denmarks statistics can be accessed using pydst, also L08
+        \item There is even a python package for downloading \href{https://imdbpy.github.io/}{\underline{IMDB data}} (A group actually used IMDB data last year, \href{https://github.com/NumEconCopenhagen/projects-2019-credible-threats/tree/master/dataproject}{\underline{Credible threats}}, although they downloaded the data manually)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{My tips on Pandas and data science generally}
+    Data science can be an excruciating job. Because you're doing self-chosen projects, you won't be able to rely as much on the lecture and PS. Remember to reach out when you're having problems.\\
+    There are loads of python guides and stack-flow answers on the internet, so the right google search can also be your saviour. \\
+    You been introduced to many different ways of referencing data. I'd recommend using \code{.loc[I,columns]} mostly in the beginning, as it is the most versatile. Instead of the conditions implicit in \code{I}, you can also use a list of index-numbers. \\
+    When creating Boolean condition, I'd also recommend being explicit with your brackets. Also, remember '\code{\&}' is the bit-wise 'and' operator, and '$\vert$' is the bit-wise 'or' operator (Depending on your keyboard is could be AltGr+'the key with $\vert$ on it' (close to backspace), or Alt+i), also called pipe or vertical line.
+\end{frame}
+
+
+\section{Reviews and poll}
+
+\section{Notes on problem set 3}
+\begin{frame}{My notes on problem set 3}
+    I'd would recommend to be more lenient about looking at answers in this problem set, as it mostly focuses on referencing and adjusting data, and is therefore a bit syntax heavy. You still need to make sure you understand what the syntax is doing though!. \newline
+    In 2.5, when using the .drop() method, remember to use the argument \code{inplace=True}, to alter the DataFrame you're calling it on. \\
+    In 2.6 it says rename 'consumption' to 'cons', but it should just be 'con'. \newline
+    At problem 2.7, beyond the lines you are explicitly asked to correct, there is an additional error in the \code{try:}-block, at the '\code{dt['assets\_3'] =...}' - line. \\ 
+    Also 2.7 is quite hard, because you have to get all 4 correct at the same time, and you don't get a error message. A suggestion would be to run the lines individually to check if they are correct. 
+\end{frame}
+
+\begin{frame}{My notes on problem 3}
+    For loading excel data in problem 3, look at point 3.1 in lecture 7. And remember when doing this exercise to continuously look at the data, to see if the operations you have performed worked as expected. And what you need to do to make it look like answer. \\ 
+    Notice that the \code{rename\_dict} does not contain 'Unnamed: 0', which contains year, you need to add it yourself.
+    
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below left=3.8 cm and 1 cm of current page.north east] 
+        {\includegraphics[width=4 cm]{why_does_it_work.jpg}};
+    \end{tikzpicture}
+\end{frame}
+
+\end{document}

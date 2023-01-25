@@ -1,0 +1,205 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wish for something different from textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Third exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+\section{My thoughts on problem sets}
+
+\begin{frame}{My thoughts on problem sets}
+They are located \href{https://github.com/NumEconCopenhagen/exercises-2021}{\underline{here}} (You can fork them, like I showed you in the last exercise class, or download them directly)
+    \begin{itemize}
+        \item A point that bears repeating: You're not required to start from scratch at every problem, finding something similar from the lecture notes or even the internet and then rewriting code to apply to the specific problem is encouraged
+        \item Try and understand the harder problems conceptually first: what am I'm trying to do, which steps does this require, then you can start writing up the code to solve it
+        \item It's fine to look at the solutions, but if you do, make sure you understand each line and how it all comes together
+        \item The internet (and me) is your friend, when getting weird errors
+        \item Also: experimentation is key, running something and getting an error allows you to learn something
+    \end{itemize}
+\end{frame}
+
+
+\section{Problem set 1}
+
+\begin{frame}{Projected time plan:}
+\begin{itemize}
+    \item 15:20-15:35: I'll introduce you to problems 2.1-2.4
+    \item 15:35-16:00: You'll do problems 2.1-2.4 yourself
+    \item 16:00-16:15: Break
+    \item 16:15-16:20: You'll do problems 2.1-2.4 yourself
+    \item 16:20-16:30: Introduction to problem 3
+    \item 16:30:16:55: You'll do problem 3 yourself
+    \item 16:55-17:00: Recap and poll about class structure
+\end{itemize}
+    
+\end{frame}
+
+
+
+\begin{frame}{My notes on problem set 1}
+    You should note that this problem set requires stuff you learned in lecture 3 and not Monday's lecture. \newline
+    \textbf{Notes on specific problems:}
+    \begin{itemize}
+        \item 2.2 print: f-strings or formatted string literals is an excellent tool for printing your results. The basic syntax for printing a float is: f'\{float:\code{width}.\code{digits}f\}', where \code{width} is total width and \code{digits} is digits after the decimal point, but other letters than f after \code{digits}, leads to different options. A general guide can be found \href{https://realpython.com/python-f-strings/}{\underline{here}} (This also introduces other possible formatting options, but I recommend sticking to f-strings, so you can skip to that part) and a great table with number formatting options can be found \href{https://mkaz.blog/code/python-string-format-cookbook/}{\underline{here}}
+        \item 2.3 matplotlib: Use point 4.4 in lecture note 3. There is no need to memorise all the plotting code. Also if you write \code{fig.tight\_layout()} at the end it will look a little prettier
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{More notes on problem set 1}
+    \begin{itemize}
+        \item 2.4: Numpy has the sine function. If you can't remember the syntax for using scipy optimize, you can can have a look at point 7 in lecture note 3 or even look at the \href{https://docs.scipy.org/doc/scipy/reference/optimize.html}{\underline{documentation}}
+        \item 3: It might look scary, but in essence it just a multi-dimensional version of the previous problem. The simple loop Jeppe has prepared is kind of slow and imprecise, beyond just using itertools as he suggest, a small amount of economic intuition can increase the speed significantly, I'll show you at the end of the class
+    \end{itemize}
+    If you find that you're having trouble understanding any of the problems conceptually (meaning that you can solve it, but you're not quite sure how you did so) write me, and I can explain it to you
+\end{frame}
+
+
+\section{Recap and poll}
+\begin{frame}{Recap and pol}
+\begin{alertblock}{An opinion poll:}
+    I want to know your opinion on the classes via \href{https://forms.office.com/Pages/ResponsePage.aspx?id=kX-So6HNlkaviYyfHO_6keqQaX6yJ3ZCtwv_fJfDA0xUQk1IREFWWFgzUURFMzhCTFRUTENaNENIWCQlQCN0PWcu}{\underline{this poll.}}
+\end{alertblock}
+
+\begin{tikzpicture}[overlay, remember picture]
+        \node[below left=2.45cm and 3.25cm of current page.north east] 
+        {\includegraphics[width=6.7 cm]{pain.jpg}};
+    \end{tikzpicture}
+\end{frame}
+
+
+\begin{frame}{You to-do}
+    The deadline for the inaugural problem is 19th of March. So your priorities should be:
+    \begin{enumerate}
+        \item Finish the DataCamp courses (The deadline is this Sunday!)
+        \item Organise your group and register in group excel file (In MS Teams: UCPH\_Lectures - Introduction to Programming $\rightarrow$ 'General'-channel $\rightarrow$ Files $\rightarrow$ Groups.xlsx).
+        \item Make sure you understand  what we've covered today in PS1.
+        \item Prepare yourself for next exercise class by reading PS2. PS1 and PS2 contains all the tools you need for project.
+        \item Possibly review lecture 3 and 4, they cover the topics you need in order to solve the project.
+        \item If you have time, you can check out \href{https://github.com/NumEconCopenhagen/lectures-2020/blob/master/projects/InauguralProject.pdf}{\underline{last year's inaugural project}}, it is very similar to this years. There is no official solution guide, but you can see the repositories of former groups. \href{https://github.com/NumEconCopenhagen/projects-2020-kongeraekken-1/tree/master/inauguralproject}{\underline{This group}} had a particularly elegant solution. 
+    \end{enumerate}
+    
+\end{frame}
+
+\end{document}

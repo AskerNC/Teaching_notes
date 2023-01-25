@@ -1,0 +1,176 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Fifth exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}{PSA}
+    KUnet and Absalon are inaccessible from Friday 19th, 17:00 to Sunday 21st, 18:00, because of some security update. \newline
+    So make sure you have watched the 'Handing-in with Git'-video before the weekend. \href{https://dchsou11xk84p.cloudfront.net/html5/html5lib/v2.80/mwEmbedFrame.php/p/343/uiconf_id/23452573/entry_id/0_z3o0q5lk?wid=_343&iframeembed=true&playerId=kaltura_player&entry_id=0_z3o0q5lk&flashvars[streamerType]=auto&amp;flashvars[localizationCode]=en&amp;flashvars[leadWithHTML5]=true&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=0_yzpoyodt}{\underline{This hyperlink}} might still work during the update, but I'm not certain.\\
+    Microsoft Teams and Github will still be working so you can still contact me and hand-in. \\ 
+    Apparently my work email is also closed down. But you can contact me at my personal email:  nygaardchristensen7@gmail.com. Only for this weekend however, afterwards I'd prefer to still get it at my work email: hms467@econ.ku.dk
+\end{frame}
+
+
+\section{The Inaugural Project}
+\begin{frame}{Inaugural Project, tips}
+    \begin{itemize}
+        \item  [Q1:] With some algebra, the optimisation problem can be rewritten, by combining the constraints and inserting them into the utility function, such that you're only optimising with respect to $p_h$ (which is the same as $h$) with no constraints. This makes the computation faster, and also easier to write up in code. Then you just need to maximise utility. \code{optimize.minimize\_scalar} has the easiest syntax when you're only optimising with respect to one variable. \newline
+        While you don't need a bounded optimiser, having it is very much allowed. There are many different ways to get the correct result. \\
+        Personally, I think it would be stringently more correct to have $h$ bounded between 0 and the maximum amount allowed given $m$ and housing expenses. But since it gives the same results for the parameters, both approaches are correct.
+        \item [Q3:] You're just solving Q1 multiple times. Then, given optimised choices, you'll be able to calculate avg. taxes.
+    \end{itemize}  
+\end{frame}
+
+\begin{frame}{Inaugural Project, tips}
+    \begin{itemize}
+        \item [Q5:] If you wrap your answer to Q3 in a function, that takes  $\tau ^{g}$ as an argument, you have a simple root finding problem (make sure that arguments are nested properly such that consumer choices change, depending on $\tau ^{g}$!). You can use the \code{optimize.root}-function. \\
+        Alternatively you can also assume that taxes paid correlate positively with $\tau ^{g}$, and loop over guesses that change depending on the distance to the tax-goal. Similar to the exchange economy problem in problem set 3. \\
+        The assumptions holds because of the preferences, but you you can also just show it empirically by plotting avg. taxes as a function of $\tau^{g}$.
+    \end{itemize}
+    
+\end{frame}
+
+\begin{frame}{Inaugural Project, tips}
+    Don't forget to document and comment your code properly, following  the guidelines explained in lecture 5. Good documentation is good coding practice. It helps me and your peer-reviewers if you document now, but most importantly, you'll help your future selves to understand your own code. \\
+    Also: Be very mindful of positional and keywords arguments, and making sure to reference them in the right way. \\
+    Remember that \code{optimize.minimize\_scalar} minimises with respect to the first argument of the objective-function. \\
+    It always good to make logic-checks, after finding your answers. For example, after finding $h^{*}$, maybe try to plot utility as function of $h$, and make sure your answer looks correct. 
+\end{frame}
+
+
+
+\begin{frame}{Sources of inspiration for the inaugural project:}
+    The deadline for the inaugural problem is 21st of March.
+    \begin{enumerate}
+        \item PS1 and PS2 contains the tools you need for the project, understanding and using them is crucial.
+        \item Lecture 3 and 4 also covers the important topics, drawing inspiration and re-applying code from them is allowed. 
+        \item \href{https://github.com/NumEconCopenhagen/lectures-2020/blob/master/projects/InauguralProject.pdf}{\underline{Last year's inaugural project}} is very similar to this year's. \\
+        Jeppe showed the solution to this in \href{https://github.com/NumEconCopenhagen/lectures-2021/blob/master/06/Examples_and_overview.ipynb}{\underline{monday's lecture}}.
+    \end{enumerate}
+    Programming can be frustrating. Remember to take breaks when encountering frustrating bugs. Fresh eyes are much better a spotting bugs, this applies both to asking a friend, but also for taking breaks. \\
+    It's okay to hand-in something where the final result is wrong, but you've been unable to fix it. Just make sure to document it, and I'll help you. You'll have time to revise for the exam.
+    
+\end{frame}
+
+
+
+\end{document}

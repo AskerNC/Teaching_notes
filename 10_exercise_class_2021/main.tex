@@ -1,0 +1,186 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Tenth exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+
+\section{Data project}
+
+
+
+\section{Problem set 6}
+
+\begin{frame}{My notes:}
+    \begin{alertblock}{General tip}
+    When doing \code{scipy.linalg}, Google is your friend. \\
+    For any standard matrix-operation you want to do, there will (likely) be a corresponding \code{scipy.linalg}-function.
+    
+    \end{alertblock}
+    \begin{enumerate}
+        \item[2.1, A:] You want to find the \underline{det}erminant of the \underline{inv}erse of the dot-product of two matrices. For dot-product you can use \code{np.dot()} but also the \code{@}-operator.
+        \item[2.1, B:] It should maybe say using \code{scipy.linalg}. Note that each equation can be solved seperately.
+        \item[2.2:] For the \code{gauss\_jordan()}-function to work, you need to add \code{e} as a 4th column in \code{F}. \\ 
+        \code{np.column\_stack((F,e))} is the easiest in this case, but there are many others, I'll show you.
+    \end{enumerate}
+
+\end{frame}
+\begin{frame}{Problem 2.3, Symbolic}
+\begin{itemize}
+    \item Remember to initiate unknown variables in sympy using \code{sm.symbols()}
+    \item And also notice that you need to use the sympy sine-function (\code{sm.sin()})
+    \item For the remaining sympy operators you need, I'd use google. Notice that their tutorial/documenation loads sympy as:\\
+    \code{from sympy import *}
+    \item You can also look through Monday's notebook, which uses all the relevant sympy functions.
+\end{itemize}
+\end{frame}
+
+
+\section{P. 3, Solow model and root-finders, 16:15}
+
+\begin{frame}{Problem 3, Solow model}
+\begin{itemize}
+    \item[A:] Use the answer from above with solving equations symbolically. Notice that the default return of the solver is a list, even when there is only one solution, so you need to extract the first element of this list to get pretty printing.
+    \item[B:] \code{sm.lambdify((args),f)} is like \code{lambda args: f}, for symbolic arguments. In this setting you can use your answer to A as \code{f}.
+    \item[C:] There are multiple ways of using \code{root\_scalar}. 'Brentq'-method, which requires an bounds (called \code{brackets} for \code{root\_scalar}), 'bisect' is also possible with the same needs. \\
+    'newton' method is doesn't need bounds, but does need a first derivative and many more.
+    \item[D:] Using CES-production function is (relatively) easy because we're using Python instead of maths
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Solving Solow, an alternative }
+    An alternative to using \code{root\_scalar}, would be to simply simulate the model, I find this to be the most intuitive way. Inserting a $\tilde{k_{0}}>0$ in the transition equation:
+    $$
+    \tilde{k}_{t+1}= \frac{1}{(1+n)(1+g)}[sf(\tilde{k}_{t})+(1-\delta)\tilde{k}_{t}]
+    $$
+    $$
+    \tilde{k}_{1}= \frac{1}{(1+n)(1+g)}[sf(\tilde{k}_{0})+(1-\delta)\tilde{k}_{0}]
+    $$
+    and iterating from that point to find $\tilde{k_{1}} \rightarrow \tilde{k_{2}}\rightarrow \dots$, will eventually lead  (approximately) to the steady state 
+    $\tilde{k}^{\ast}$. (where $\tilde{k}_{t}=\tilde{k}_{t+1}$)
+\end{frame}
+\end{document}

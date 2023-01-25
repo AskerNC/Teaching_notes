@@ -1,0 +1,228 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Fourth exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+    \tableofcontents[]
+\end{frame}
+
+
+
+\section{2.1-2.2 shown in class}
+\begin{frame}{Notes for problem 2.1}
+    This problem set is centered around lecture 4 and random numbers. \newline If you want to see my take on the problem sets, they are
+    \href{https://github.com/AskerNC/exercises-2021}{\underline{here}}. \\
+    I'll quickly show you problem 2.1-2.2 in class, since they are not that important. \\
+    \vspace{1cm}
+    \textbf{Problem 2.1}: \newline 
+    You need the \code{np.random.get\_state()} and \code{np.random.set\_state()} explained in lecture 4 section 3.2
+\end{frame}
+
+\begin{frame}{Notes for problem 2.2}
+    Use numpy, it has functions for calculating means and variance. \newline Think in steps: 
+    \begin{itemize}
+        \item Create an x-array that contains elements pulled from a normal distribution
+        \item Create an array that contains the elements of the output of the \code{g}-function. You have two options: either create a g-function that uses arrays as input and output and call it on the entire x-array, or one that takes floats as input/outputs and then call it on each element of x (bit-wise))
+        \item Use numpy functions to calculate the statistics. (You can also write the equations to calculate them 'manually' if you wish, but \code{np.mean()} and \code{np.var()} are easier)
+    \end{itemize}
+    Another thing: I don't know why the mean is subtracted when calculating the variance in the solution, but it does not change the answer
+\end{frame}
+\section{Problem 2.3-2.5}
+\begin{frame}{Problem 2.3}
+    The first missing line is that you need to import the function \code{norm} from the \code{scipy.stats}-module. (documentation \href{https://docs.scipy.org/doc/scipy/reference/stats.html}{\underline{here}}) normally I use np.random.normal, but scipy.stats, as you can see in the documentation, also has a bunch of distributions. And some different methods (e.g. \code{.ppf()}) \newline
+    For the next two missing lines, look at lecture 4 section 3.4, point: b. vector of x values \newline
+    For widgets look at section 5, case 1, in lecture 4. Then notice that the \code{fitting\_normal()}-function in the PS, can be called in a similar fashion as the \code{interactive\_figure()}-function in the lecture note.
+\end{frame}
+
+\begin{frame}{Problem 2.4-2.5}
+    \textbf{2.4} \newline 
+    You can generate any data you want to, it does not need to be the same as Jeppe (it would be impossible to guess), the my\_np\_data just needs to be a numpy array (although lists actually also work). \newline
+    For saving files using \code{pickle} and \code{numpy} look at section 8.1 and 8.2 in lecture 4 \newline
+    \textbf{2.5} \newline 
+    After defining the new function, it is possible you have to restart your kernel in jupyter lab for it to work, if you have not run the:\newline
+    \code{\%load\_ext autoreload} \newline
+    \code{\%autoreload 2}\newline
+    -cell, in the beginning of the notebook.
+\end{frame}
+
+
+\begin{frame}{PS 2.3-2.5 DYI}
+    \begin{alertblock}{We'll meet back at 16:15 after the break}
+    If you don't mind me visiting you randomly, make sure to open a video meeting, then I'll move between channels when there are no questions. \\
+    Write me if you want me to open a group channel, then ones I have made so far are based on the sign-up sheet for the inaugural project (BTW make sure you fill that out).
+    At 16:15 we'll meet back here, and go through the Github exercise together.
+    \end{alertblock}
+\end{frame}
+
+
+\section{Problem 2.6}
+\begin{frame}{Problem 2.6, Github exercise}
+    We go through this together. Last time I made a mistake when showing you how forking works, I apologise. \\
+    \textbf{Normal cloning:} Follow the \href{https://numeconcopenhagen.netlify.app/guides/vscode-git/}{\underline{guide}} \\ 
+    \textbf{For forking:} Go to the repository, press the 'fork'-button. Now a new repository will show up which is saved under your Github account, you then clone this repository (see guide from section 2). \\
+    \underline{Then} you need to tell VS code, that this repository should accept changes from the master repository. This is done by typing: \\ Ctrl$+$Shift$+$p$+$'>Git: Add remote...'  \\
+    Then pasting in the url of the master repository+Enter. \\ Then typing any name is valid (e.g. 'Upstream')+ Enter. \\
+    Now to load master changes, you type Ctrl$+$Shift$+$p$+$'>Git: Pull From...', then choosing the 'Upstream'. \\
+     See \href{https://stefanbauer.me/articles/how-to-keep-your-git-fork-up-to-date}{\underline{here}} for a explanation of why.
+\end{frame}
+
+\section{Problem 3}
+\begin{frame}{Problem 3}
+    \begin{itemize}
+        \item $f\left(x,\beta_{i}\right)=\frac{1}{\beta_{i}}\exp\left(\frac{-x}{\beta_{i}}\right)$ refers to the PDF of the exponential distribution. So you'll need \code{np.random.exponential(beta1,size=N)} (and also for \code{beta2}).
+        \item When restricting bounds on $\alpha$ you can draw inspiration from problem 2.1 
+        \item For the demand function you are allowed to use the the Cobb-Douglas rule (demand for good 1 is $\alpha_{1}\cdot\frac{Income}{p_{1}}$). 
+        \item You can normalise $p_{2}$ to numeraire ($p_{2}=1$), as it is only the relative price that matters.
+        \item Use Walras' law so you only have to clear the market for one good. The \code{find\_equilibrium}-function, which is hinted only needs a few changes to apply to this problem.
+    \end{itemize}
+\end{frame}
+
+
+\section{Next time and the inaugural Project}
+\begin{frame}{Inaugural Project}
+    Programming can be frustrating. Remember to take breaks when encountering frustrating bugs. Fresh eyes are much better a spotting bugs, this applies both to asking a friend, but also for taking breaks. \\
+    You'll have time to do it in class next week under my supervision \\
+    Don't forget to organise your group and register in group excel file (In MS Teams: UCPH\_Lectures - Introduction to Programming $\rightarrow$ 'General'-channel $\rightarrow$ Files $\rightarrow$ Groups.xlsx).
+    
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below left=4.7cm and 0cm of current page.north east] 
+        {\includegraphics[width=5.9 cm]{Debugging.png}};
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Sources of inspiration for the inaugural project:}
+    The deadline for the inaugural problem is 19th of March.
+    \begin{enumerate}
+        \item It's okay to hand-in something where the final results wrong, but you've been unable to fix it. Just make sure to document it, and I'll help you. You'll have time to revise for the exam.
+        \item PS1 and PS2 contains the tools you need for the project, understanding and using them is crucial.
+        \item Lecture 3 and 4 also covers the important topics, drawing inspiration and re-applying code from them is allowed. 
+        \item \href{https://github.com/NumEconCopenhagen/lectures-2020/blob/master/projects/InauguralProject.pdf}{\underline{Last year's inaugural project}} is very similar to this year's. There is no official solution guide, but you can see the repositories of former groups. \href{https://github.com/NumEconCopenhagen/projects-2020-kongeraekken-1/tree/master/inauguralproject}{\underline{This group}} had a particularly elegant solution. \\ 
+        I think Jeppe might show an official solution on Monday. 
+    \end{enumerate}
+    
+\end{frame}
+
+
+
+\end{document}

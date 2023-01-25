@@ -1,0 +1,236 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+%\usepackage{hyperref} %For link- references
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{First exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{A little about me}
+\uncover<+->{
+\textbf{The headers:}
+\begin{itemize}
+    \item My name is Asker
+    \item At my first semester in the master of economics 
+    \item Research assistant at the institute
+    \item Took this course in 2019
+    \item Taught it in 2020, now back again to do it online
+\end{itemize}
+\vspace{1mm}
+} 
+\uncover<+->{
+\textbf{First time teaching completely online}
+\begin{itemize}
+    \item There will likely be some confusion and changes of the structure as we progress
+    \item Any criticism and suggestions are very welcome
+    \item You can privately contact me on email at: hms467@econ.ku.dk, but for general questions, you can also use the chat in the Class\_5 team, 'general'-channel.
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{This course and how the classes relate to it}
+    \textbf{What you'll learn:}
+    \begin{itemize}
+        \item Programming is, on top of being a 'hot career-path for the 21st century', directly applicable to your studies. An alternate approach to solving economic models with analytical mathematics
+        \item Truly learning the foundations of Python will help you understand programming in general, at make it easier to learn new languages
+    \end{itemize} 
+    \textbf{How I'll help you during the exercise classes:}
+    \begin{itemize}
+        \item The Danish idiom: ``Help to self-help'' is very applicable here
+        \item While you're doing DataCamp exercises I'll mostly be a fly on the wall, but I can also help you with installation issues 
+        \item Then I'll help you with tips and notes for the problem sets and projects. And I'll be there when you get stuck (which in all likelihood will happen many, many times) 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Online teaching}
+    We'll meet here in Microsoft Teams, in the 'UCPH\_Class 5  - Introduction to Programming'-team -> In the 'General'-channel. \\
+    In a typical exercise class we'll:
+    \begin{itemize}
+        \item Meet here in the 'General'-channel, where I'll talk for few minutes.
+        \item Then you'll go to your separate group channels, where you'll be able to talk in the group while doing exercises. \\
+        If your group is not physically together, the 'meet'-button in the top-right corner starts a video-call for your group-channel (only after pressing you group name in the left side).
+        \item If you need help you can send a text in the general channel. If you have simple questions I'll answer over text, but I'll also be able to join the video chats in your group channels and help you directly. 
+        \item At the end of the class I call everybody together in the 'General'-channel were we'll recap and finish together.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Online teaching - today}
+    \begin{itemize}
+        \item This time is a bit different. Not everybody has a group yet, and I haven't received a list of them either, so I haven't created the channels. \\
+    Therefore I've created a public 'Talk channel', were we can video-chat if you're having specific problems.
+        \item I you already have a group please write the group name and the names of the members and I'll start creating the channels. If you already know you prefer to work alone, you also write it, so you can have you're own channel where I can visit you.
+        \item You'll then be free to roam between the general video-chat and the more private group channel.
+        \item Around 16:55, I'll call you back into the 'general' video chat and we'll finish together.
+    \end{itemize}
+\end{frame}
+
+
+\section{Tips for DataCamp and installation}
+\begin{frame}{Installation}
+    \begin{itemize}
+        \item Follow the guides on the  \href{https://numeconcopenhagen.netlify.com/guides/}{\underline{course website}}, it takes a few hours, but it is mostly loading time that you can spend doing DataCamp exercises \oldWinkey
+        \item Problems and errors can occur and are frustrating, so follow the instructions closely and in the correct order. If all fails postpone it, and I'll help you doing the exercise class
+        \item Not strictly a necessity while we're doing Datacamp, but I still recommend that the you download it now. Then you can use it during lectures to familiarise yourself with the environment, and have time to make sure everything works
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Why do we need all these different programs?}
+    I've been asked why we need all these different programs, so here is a quick introduction. We'll talk more about them later.
+    \begin{itemize}
+        \item \textbf{Anaconda:} Not directly used (except to open other programs) but helps you download Python, JupyterLab and lots of python goodies
+        \item \textbf{JupyterLab:} Writing notebook files (.ipynb). Which are good for visualising results and presenting your projects
+        \item \textbf{VS Code:} Writing standard Python files (.py) which are good for writing  and debugging extensive code and functions that you can refer to and use in notebooks (basically writing your own module that you can import like you would Numpy)
+        \item \textbf{Git:} Operated through VS Code. Allows you to work on projects (together online), sharing them instantly and showing them to me (when you upload they will appear in your very own group Github page, like the \href{https://github.com/NumEconCopenhagen/lectures-2021}{\underline{Lectures}})
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{DataCamp}
+    \begin{itemize}
+        \item There are a total of four courses you need to complete and the deadline is on March the 7th.
+        \item The aggregate estimated length of the courses is 15 hours. In reality it varies somewhat, but it does take a lot of time.
+        \item Mostly, the DataCamp courses are great and self contained, so the videos and text gives you all the information you need, but occasionally bugs or small mistakes may occur. When this happens Google is your friend (and also me)
+        \item No need for memorisation, understanding is key. As you progress, try to understand not only how to complete the problems, but why all the code works
+    \end{itemize}
+\end{frame}
+
+\section{DataCamp exercises}
+\begin{frame}{DataCamp exercises}
+
+    \textbf{Now it's time for the DataCamp exercises}
+    \begin{itemize}
+        \item If you get stuck somewhere or have trouble understanding a concept, write in the 'General'-chat. If it's complicated or about installation we can also talk about it in the 'Talk channel'.
+        \item You're in charge of taking breaks
+        \item If you have a group, write the \\
+        group name and name of the \\ 
+        members in the chat,\\
+        I'll then make a channel for you.
+        \item I'll call you all back to recap here\\ 
+        at around 16:55
+    \end{itemize}
+
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below left=3.7cm and 0cm of current page.north east] 
+        {\includegraphics[width=6.1 cm]{Crashing.jpeg}};
+    \end{tikzpicture}
+\end{frame}
+\end{document}

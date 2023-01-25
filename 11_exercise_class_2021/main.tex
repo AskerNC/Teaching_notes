@@ -1,0 +1,225 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Eleventh exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+
+\section{My notes on the model project}
+\begin{frame}{Model project}
+
+\begin{itemize}
+    \item The deadline is firm at Friday, the 14th of May. There won't be time for re-submitting, because I have to tell the administration whether you're eligible for the exam.
+    \item You don't have to make a model from scratch, but you do have to be a bit creative. You're also welcome to take inspiration from former groups, since they are all available at Github
+    \item If you already have a complex model, your extension doesn't necessarily have to be revolutionising. It will typically be easy to re-solve the model with a different production or utility function.
+    \item If you're not certain how to solve the model then start out by brute-forcing it: simulating a model will likely be slow, but should give you the right answer.
+    \item Motivation: Two great projects will be a good safety net. They can compensate for a disappointing exam project.
+\end{itemize}
+\end{frame}
+
+
+\section{Notes on problem set 7}
+
+\begin{frame}{General}
+    These problems are really complex, and also a step op from last week. Small mistakes and errors will occur, so have patience! \\
+    However they are also very relevant for the exam and could give you the tools you need for the model project.
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below left=3.4 cm and 4 cm of current page.north east] 
+        {\includegraphics[width=5.2 cm]{Stages_of_debugging.jpeg}};
+    \end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Optimization problem I}
+    \begin{itemize}
+        \item Question a: I would recommend taking a look at the 3D plot and contour plot part of section 2 in lecture 11. And for the contour plot: it's not important to guess/figure out the same levels as the answer, but the way it is done is quite smart.
+        \item Question b: Depending on your version of \code{scipy}, next question might only work if these function return numpy arrays.
+        And the Hessian needs to be a $2\times 2$-array of the form: \code{np.array([[f11,f12],[f21,f21]])}. 
+    \end{itemize}
+    
+\begin{alertblock}{The mathematical formulations:}
+
+\begin{equation*}
+    J\left( f\left(x_{1},x_{2}\right) \right) = 
+    \begin{bmatrix}
+        \frac{\partial f}{\partial x_{1}} \\
+        \frac{\partial f}{\partial x_{2}}
+    \end{bmatrix}
+\end{equation*}
+\\
+\begin{equation*}
+  H\left( f\left(x_{1},x_{2}\right) \right) = 
+  \begin{bmatrix}
+    \frac{\partial^{2} f}{\partial x_{1} \partial x_{1} } & \frac{\partial^{2} f}{\partial x_{1} \partial x_{2} } \\
+    \frac{\partial^{2} f}{\partial x_{2} \partial x_{1} } & \frac{\partial^{2} f}{\partial x_{2} \partial x_{2} }
+  \end{bmatrix}
+\end{equation*}   
+\end{alertblock}
+    
+
+ 
+\end{frame}
+
+\begin{frame}{Optimization problem I -c}
+    \begin{itemize}
+        \item Question c: The programming is almost identical to section 2.1 in lecture 11. But see the \href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html\#scipy.optimize.minimize}{\underline{documentation}} for the different optimizers and how to use them. \newline
+            Choosing an optimal optimizer is very much problem-dependent. Using analytical gradients typically saves computing power (Fewer iterations and evaluations), but of course calculating them analytically either requires some computation in sympy or by yourself, so you have to take that into account. Unless I'm doing something that's computationally very heavy, my main concern when choosing an optimizer is whether or not I need bounds and constraints. In the introduction to lecture 11 Jeppe has a nice summary of pros and cons on the different scipy optimizers, where he also lists which optimizers handles bounds and constraints. \newline
+            In lecture 14 you'll learn how to time the computing time of your functions, allowing you to test yourself, which optimizer is ideal for your specific problem. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Optimization Problem II}
+    \begin{itemize}
+        \item Question A: Can be done mostly by reusing code from Optimization problem I, and then looping trough the different starting points marking the optimization if it is better than the previous best. You'll also need to store all optimizations and results. \\
+        The answer uses \code{'BFGS'}, but you can use any method you prefer, which will give you slightly different answers.
+        \item Question B: 3D scatter plots are a lot like plotting surfaces like you did in Optimization problem I, but instead of: \newline
+        \code{cs = ax.plot\_surface(x1\_grid,x2\_grid,f\_grid,cmap=cm.jet)} \newline 
+        and the lines creating the   grids, just write this: \newline 
+        \code{cs = ax.scatter(xs[:,0],xs[:,1],fs,c=fs)} \newline
+        (So it's all 1-Dimensional input), the \code{c} is for scaling the color.
+        \item For question C you're just plotting x0s instead of xs.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Solve the consumer problem with income risk I}
+\begin{itemize}
+    \item Question A: In this problem you are given the functions for solving the problem, but read them thoroughly as you'll need to be able to use them correctly. \newline
+    You also need to create the \code{v2\_interp} argument using the scipy.interpolate function RegularGridInterpolator, by solving period 2 first. You can see an example of this in the last section of lecture 11.
+    \item Question B: You'll need to define a new \code{v1}-function. \\
+    Interpretation: Higher risk in future periods increases savings.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Solve the consumer problem with income risk II}
+    Depending on the power of your computer, the \code{solve\_period\_2()}-function might run a bit slowly, you can turn down precision (replace 200 with 100 for example) if it becomes a problem. \newline
+    The RegularGridInterpolator works for functions with multiple arguments also. If you are unsure of the syntax for that, I think the best way to learn it is to look at the answer. The x-values are a list of the two arguments as vectors, while the function-values should be in a grid format. \newline
+    Also, it isn't explicitly noted, but $d_{1}=d_{2}$, as it is durable consumption with no depreciation. \newline 
+    If you're using scipy, you might get the warning: \code{RuntimeWarning: Values in x were outside bounds during a minimize step, clipping to bounds warnings.warn("Values in x were outside bounds during a "} \newline
+    This seems to be an error in the scipy package, so don't worry to much about it. \newline
+    My version of the extra problem (and all the others) is on \href{https://github.com/AskerNC/exercises-2021/blob/master/PS7/problem_set_7-sol.ipynb}{\underline{Github}}
+\end{frame}
+
+\end{document}

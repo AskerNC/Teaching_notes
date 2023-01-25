@@ -1,0 +1,191 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+\usepackage{hyperref} %For link- references
+
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Fourteenth exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+
+\section{Your projects}
+\begin{frame}{Projects}
+\begin{itemize}
+    \item You've done really well
+    \item Most of you have gotten concrete suggestions for what I think you should correct for the exam
+    \item Remember that having good projects maximises your odds of passing the exam
+    \item Editing them and upgrading i also fine practice for the exam
+    \item Of course it won't hurt to read it through one last time to make sure everything looks nice and have a decent structure. Using restart kernel and run all cells, is also a good way to \\
+    make sure there is no undue errors that might have \\
+    crept in, if you make any changes
+\end{itemize}
+
+\begin{tikzpicture}[overlay, remember picture]
+        \node[below left=6 cm and 0 cm of current page.north east] 
+        {\includegraphics[width=3 cm]{Good_job.jpg}};
+    \end{tikzpicture}
+\end{frame}
+
+\section{My tips on the exam}
+\begin{frame}{Preparation}
+    \vspace{-0.3cm}
+    Look through previous exams, which can be found at the \href{https://github.com/NumEconCopenhagen/lectures-2021/tree/master/exam}{\underline{Github-page}}, to get an idea of what kind of questions there will be and inspiration for possible approaches. The breadth and depth might be a little intimidating, but you should note that in 2019, although the official workload was 24 hours, the exam period was a whole week, while you'll only have 2 full days, so the length won't be representative. Also the  solutions are very thorough, to pass the exam it is not required that you answer all the questions perfectly. \newline
+    Look trough the lecture notes and problem sets and note all the places where an economic model is solved. This will be an useful reference point as you'll will likely have to solve similar models in the exam, so being able to locate these models quickly and drawing inspiration for the solution approach is key. When looking through them, you should also make sure you still understand the implemented method, while you can still ask questions about them to me (hms467@ku.dk). \newline
+\end{frame}
+
+\begin{frame}{During the exam}
+    \begin{itemize}
+        \item Keep your head cool. Programming can be frustrating and errors will occur, especially when you're on a 48-hour deadline
+        \item Use the lecture notes and your solutions to the problem sets, the problems will likely be somewhat similar to something you've seen before, readjusting old code to apply to new problems is a great way to efficiently solve problems. 
+        \item If any sub-question is not running correctly, due to bugs you don't understand and don't know how to fix, try and explain in words how you think the problem could be solved and move on. If you have time you can revisit the problem later with fresh eyes.
+        \item If you're in a group I personally wouldn't recommend answering the whole exam problem chronologically together. As a I  consider it more efficient to split up the problems and attempt to solve them individually, then afterwards, you can regroup and help each other, a second pair of eyes is an excellent debugger
+    \end{itemize}
+\end{frame}
+
+
+
+
+\section{Exam 2019}
+
+\begin{frame}{Exam 2019}
+Link to my solution: \url{https://github.com/AskerNC/exercises-2021/tree/master/Exam_2019}
+\end{frame}
+
+
+\section{Further perspectives}
+\begin{frame}{Further perspectives}
+    I really hope you've enjoyed this despite everything being online, and that you've learned something valuable for your further economic education. In my opinion understanding numerical programming brings with it a whole new understanding of economic theory. As it allows you to look at the mechanism of complicated economic models, without cutting them down to skeletons to make them solvable by hand. \newline
+    I also hope you take the lessons you've learned with you, Python is a great language and this course should only be the beginning. Further, Python is a great gateway language, understanding it makes it easier to comprehend the logic of other programming languages when you need to. I'd also recommend using Python whenever you're confronted with difficult mathematical problems without solution guides in the future, checking your answers with programming can help keep your newly found programming skills fresh. 
+\end{frame}
+
+
+\begin{frame}{Best of luck}
+    Best of luck for the exam, I hope you all perform wonderfully.
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below left=2.5 cm and 4 cm of current page.north east] 
+        {\includegraphics[width=5.5 cm]{Keep_calm.jpeg}};
+    \end{tikzpicture}
+\end{frame}
+
+\end{document}

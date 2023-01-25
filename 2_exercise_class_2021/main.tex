@@ -1,0 +1,234 @@
+\documentclass[10pt,danish,t,10pt]{beamer}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{comment} % For longer notes
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{unicode=true}
+  }
+\else
+  \hypersetup{unicode=true}
+\fi
+%\usepackage{breakurl}
+
+\usepackage{tikzsymbols}% Smileys and stuf
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+%\usepackage{hyperref} %For link- references
+
+\newcommand{\code}[1]{\textit{#1}} %Format for python, in case I wise for something different change textit
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{appendixnumberbeamer}
+
+\usetheme[progressbar=frametitle,block=fill]{metropolis}
+
+% code
+\usepackage{listings} 
+
+% margin
+\setbeamersize{text margin right=1.5cm}
+
+% colors
+\colorlet{DarkRed}{red!70!black}
+\setbeamercolor{normal text}{fg=black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed}
+\setbeamercolor{button}{bg=DarkRed}
+
+% width of seperators
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{1pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{1pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{1pt}
+\makeatother
+
+% new alert block
+\newlength\origleftmargini
+\setlength\origleftmargini\leftmargini
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{4mm}}
+\let\oldalertblock\alertblock
+\let\oldendalertblock\endalertblock
+\def\alertblock{\begingroup \setbeamertemplate{itemize/enumerate body begin}{\setlength{\leftmargini}{\origleftmargini}} \oldalertblock}
+\def\endalertblock{\oldendalertblock \endgroup}
+\setbeamertemplate{mini frame}{}
+\setbeamertemplate{mini frame in current section}{}
+\setbeamertemplate{mini frame in current subsection}{}
+\setbeamercolor{section in head/foot}{fg=normal text.bg, bg=structure.fg}
+\setbeamercolor{subsection in head/foot}{fg=normal text.bg, bg=structure.fg}
+
+% footer
+\makeatletter
+\setbeamertemplate{footline}{%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}{section in head/foot}
+      \vskip1pt\insertsectionnavigationhorizontal{\paperwidth}{}{\hskip0pt plus1filll \insertframenumber{} / \inserttotalframenumber \hskip2pt}\vskip3pt% 
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+    \end{beamercolorbox}
+}
+\makeatother
+
+% toc
+\setbeamertemplate{section in toc}{\hspace*{1em}\inserttocsectionnumber.~\inserttocsection\par}
+\setbeamertemplate{subsection in toc}{\hspace*{2em}\inserttocsectionnumber.\inserttocsubsectionnumber.~\inserttocsubsection\par}
+
+\makeatother
+\title{Second exercise class \vspace{-2mm}}
+\subtitle{Class 5 \\Introduction to numerical programming and analysis \vspace{-4mm} } 
+\author{Asker Nygaard Christensen}
+\date{Spring 2021}
+
+\begin{document}
+
+
+{
+\setbeamertemplate{footline}{} 
+\begin{frame}
+
+\maketitle
+
+\begin{tikzpicture}[overlay, remember picture]
+\node[below left=0cm and 0cm of current page.north east] 
+{\includegraphics[width=3 cm]{ku_logo.png}};
+\end{tikzpicture}
+
+\end{frame}
+}
+
+\addtocounter{framenumber}{-1}
+
+\begin{frame}<beamer>
+\frametitle{Plan}
+
+\tableofcontents[]
+\end{frame}
+
+\section{Key takeaways from each DataCamp-course}
+
+\begin{frame}{Introduction to Python}
+\begin{itemize}
+    \item The atomic types: integers, floats, strings, boolean (True/False) (2)  
+    \item Lists, including slicing and the difference between copying and referencing objects (2)
+    \item Basic mathematical operators, including the \code{**} -operator (exponentiation), the \code{\%} -operator (called the modulus or modolu -operator, not to be mistaken with the absolute value of a number, which is just \code{abs()}), and the \code{//} -operator (floor division) (2)
+    \item Using functions with keyword (default) arguments, and importing packages with further functions (2)
+    \item Some experience with numpy arrays and why they are powerful (3)
+\end{itemize}
+\mbox{}
+\vfill
+\textit{The lectures where these topics are covered are in parenthesis} 
+
+\end{frame}
+
+\begin{frame}{Intermediate Python}
+    \begin{itemize}
+        \item Plotting using Matplotlib, line plots and customization options can be found in lecture (3), while histograms are in lecture (4)
+        \item Dictionaries (2)
+        \item Pandas DataFrame and referencing the using loc and iloc (7)
+        \item Creating Boolean types using conditions and if/elif/else-statements (2)
+        \item While- and for- loops, and the \code{enumerate()} - function (2)
+        \item Drawing random numbers using numpy (4)
+    \end{itemize} 
+    \mbox{}
+    \vfill
+    \textit{The lectures where these topics are covered are in parenthesis} 
+\end{frame}
+
+\begin{frame}{Python Data Science Toolbox (Part 1)}
+    \begin{itemize}
+        \item Creating your own Python functions and understanding the difference between global and local variables, variable-length arguments (*args) and variable-length keyword arguments (**kwargs) (2)
+        \item Tuples, and how they differ from lists (2)
+        \item Preventative error handling including \code{try}-\code{except} and \code{raise} (2 and 5)
+        \item More DataFrame experience and how to combine them with functions (7)
+    \end{itemize}
+    \mbox{}
+    \vfill
+    \textit{The lectures where these topics are covered are in parenthesis} 
+\end{frame}
+
+\begin{frame}{Python Data Science Toolbox (Part 2)}
+    \begin{itemize}
+        \item Iterators and the \code{zip()} -function (2)
+        \item List and dict comprehension (using iterables to create new lists and dicts conveniently) (2, although dict comprehension is not mentioned in the lecture the concept is the same as with lists)
+        \item Using \code{open()} -function to open files saved on your computer (2)
+        \item Generators, how they differ from comprehensions and creating a generator function by replacing \code{return} with \code{yield} (not mentioned until lecture 12, as its main advantage is that it lessens memory use, so unless you have performance problems you can stick to comprehensions)
+        \item Even more DataFrame experience and how to read csv files (7)
+    \end{itemize}
+    \mbox{}
+    \vfill
+    \textit{The lectures where these topics are covered are in parenthesis} 
+\end{frame}
+
+\begin{frame}{Extra}
+    \textbf{Two important things which Christian has covered in lecture 2 but you will not encounter in DataCamp}
+    \begin{itemize}
+        \item Floats not being exact but approximations (they are `floating') - can be important when creating conditions which should hold analytically but might not hold numerically (the \code{numpy.isclose()} - function can be useful in such cases)
+        \item The \code{itertools.product()} -function, can be very useful to avoid having to create loops inside of loops
+    \end{itemize}
+\end{frame}
+
+
+\section{Git example}
+
+\begin{frame}{Git example}
+
+\href{https://numeconcopenhagen.netlify.app/guides/vscode-git/}{\underline{Guide for cloning a repository}} \par
+\begin{alertblock}{What I'll do:}
+    I'll show you how to fork and git-clone the \href{https://github.com/NumEconCopenhagen/exercises-2021}{\underline{Exercises}} \\
+    And how to commit and sync changes
+\end{alertblock}
+
+If you're having trouble with cloning the lecture notebooks, it might be because your computer has a limit on the length of file paths. \\
+Open the program 'Git Bash' as administrator ->  type in 'git config --system core.longpaths true' -> close the program (it doesn't react when you do this), and try again. (see \href{https://stackoverflow.com/questions/22575662/filename-too-long-in-git-for-windows}{\underline{here}})
+
+\end{frame}
+
+\section{DataCamp exercises}
+\begin{frame}{DataCamp exercises}
+    
+    \textbf{Now it's time for DataCamp exercises}
+    \begin{itemize}
+        \item If you get stuck somewhere or have trouble understanding a concept, write in the 'General'-chat. If it's complicated or about installation we can also talk about it in the 'Talk channel'.
+        \item You're in charge of taking breaks
+        \item If you have a group, write the group \\ 
+        name and name of the members in the  \\
+        chat, I'll then make a channel for you.
+        \item I'll call you all back to recap here \\ 
+        at around 16:55
+        \item If you've finished DataCamp, but do \\
+        not feel ready for the problems sets \\ 
+        you can look through \href{https://github.com/AskerNC/Teaching_notes/blob/master/3_exercise_class.ipynb}{\underline{this notebook}}, \\ 
+        which I made last year
+    \end{itemize}
+    
+    \begin{tikzpicture}[overlay, remember picture]
+        \node[below left=3.4cm and 0cm of current page.north east] 
+        {\includegraphics[width=5.4 cm]{Helping_other.png}};
+    \end{tikzpicture}
+    
+\end{frame}
+
+
+\end{document}
